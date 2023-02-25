@@ -8,3 +8,5 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=db
+    volumes:
+      - /data:/var/lib/postgresql/data
