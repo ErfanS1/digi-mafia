@@ -70,7 +70,8 @@ def addInfo(metadata: schemas.UserMetaData, id: int, db: Session = Depends(get_d
 
     userMetaData = db.query(db_models.UserMetaData).filter(db_models.UserMetaData.user_id == id).first()
     if userMetaData:
-        userMetaData.update(metadata.dict())
+        userMetaData.user_id = id
+        userMetaData.rank = metadata.rank
     else:
         userMetaData = db_models.UserMetaData(user_id=id, rank=metadata.rank)
         db.add(userMetaData)
