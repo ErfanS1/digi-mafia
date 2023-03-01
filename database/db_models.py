@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy import Column, Integer, String, JSON, Enum, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -25,16 +27,18 @@ class UserMetaData(Base):
     user = relationship('User', back_populates='metadatas')
 
 
-
-
-# class Game(Base):
-#     __tablename__ = 'games'
-#     id = Column(Integer, primary_key=True, index=True)
-#     players = Column(JSON)
-#     winners_team = Column(Enum)
-#     created_at = Column(DateTime)
-#     started_at = Column(DateTime)
-#     ended_at = Column(DateTime)
+class Teams(enum.Enum):
+    Citizens = 'Citizens'
+    Mafia = 'Mafia'
+class Game(Base):
+    __tablename__ = 'games'
+    id = Column(Integer, primary_key=True, index=True)
+    creator_id = Column(Integer, ForeignKey('users.id'))
+    players = Column(JSON)
+    winners_team = Column(Enum(Teams))
+    # created_at = Column(DateTime)
+    # started_at = Column(DateTime)
+    # ended_at = Column(DateTime)
 #
 #
 # class ActionsPerGame(Base):

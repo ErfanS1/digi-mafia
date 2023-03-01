@@ -1,16 +1,17 @@
 from fastapi import FastAPI
 
-from Users import models
+from database import db_models
 from database.database import engine
-from router import user, authentication
+from router import user, authentication, game
 import uvicorn
 
 app = FastAPI()
 
 app.include_router(authentication.router)
 app.include_router(user.router)
+app.include_router(game.router)
 
-models.Base.metadata.create_all(bind=engine)
+db_models.Base.metadata.create_all(bind=engine)
 
 @app.get('/')
 def index():
