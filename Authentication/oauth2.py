@@ -1,17 +1,26 @@
-from fastapi import Depends, HTTPException, status
+from typing import Optional
+
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
-from Authentication.token import getUserFromToken
+from Authentication.token import getOptionalUserFromToken, getUserFromToken
+from database import db_models
 from database.database import get_db
 from sqlalchemy.orm import Session
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login", auto_error=False)
 
 
-async def getCurrentUser(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+async def getOptionalCurrentUser(
+        token: str = Depends(oauth2_scheme), 
+        db: Session = Depends(get_db)
+) -> Optional[db_models.User]:
+    
+    return getOptionalUserFromToken(token, db)
 
-    return getUserFromToken(token, credentials_exception, db)
+
+async def getCurrentUser(
+        token: str = Depends(oauth2_scheme),
+        db: Session = Depends(get_db)
+) -> db_models.User:
+    
+    return getUserFromToken(token, db)

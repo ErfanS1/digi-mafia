@@ -1,8 +1,8 @@
-from typing import Union
+from typing import Union, Optional
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi import HTTPException, status
-from Users.schemas import UserView
+from database import db_models
 from repositories import usersRepository
 from sqlalchemy.orm import Session
 
@@ -24,14 +24,37 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 
-def getUserFromToken(token: str, credentials_exception: HTTPException, db: Session) -> UserView:
-    print(11)
+def getOptionalUserFromToken(token: str, db: Session) -> Optional[db_models.User]:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            return None
+    except Exception:
+        return None
+
+    user = usersRepository.getUserWithEmail(email, db)
+    if not user:
+        return None
+
+    return user
+
+
+def getUserFromToken(token: str, db: Session) -> db_models.User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
     except JWTError:
+        raise credentials_exception
+    except Exception:
         raise credentials_exception
 
     user = usersRepository.getUserWithEmail(email, db)

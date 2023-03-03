@@ -1,7 +1,10 @@
-import enum
+import datetime
+import time
 
+from .enums import Team
 from sqlalchemy import Column, Integer, String, JSON, Enum, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from .database import Base
 
@@ -26,20 +29,15 @@ class UserMetaData(Base):
 
     user = relationship('User', back_populates='metadatas')
 
-
-class Teams(enum.Enum):
-    Citizens = 'Citizens'
-    Mafia = 'Mafia'
 class Game(Base):
     __tablename__ = 'games'
     id = Column(Integer, primary_key=True, index=True)
     creator_id = Column(Integer, ForeignKey('users.id'))
     players = Column(JSON)
-    winners_team = Column(Enum(Teams))
-    # created_at = Column(DateTime)
-    # started_at = Column(DateTime)
-    # ended_at = Column(DateTime)
-#
+    winners_team = Column(Enum(Team))
+    created_at = Column(DateTime(timezone=True), default=datetime.datetime.now())
+    started_at = Column(DateTime(timezone=True))
+    ended_at = Column(DateTime(timezone=True))
 #
 # class ActionsPerGame(Base):
 #     __tablename__ = 'actions_per_games'
@@ -48,4 +46,6 @@ class Game(Base):
 #     player_id = Column(Integer)
 #     result = Column(Enum)
 #     type = Column(Enum)
-#
+
+
+# naghsh tedad, add e naghsh, pakhsh e naghsh, random,  add e esm, random assign ba repeat
