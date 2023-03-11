@@ -13,14 +13,14 @@ router = APIRouter(
 )
 
 @router.get('/all')
-def getAllUsers(db: Session = Depends(get_db), currentUser: db_models.User = Depends(oauth2.getCurrentUser)) -> Any:
+def get_all_users(db: Session = Depends(get_db), currentUser: db_models.User = Depends(oauth2.getCurrentUser)) -> Any:
     users = db.query(db_models.User).all()
 
     allUsers = schemas.AllUsers(users=users, currentUser=currentUser)
     return allUsers
 
 @router.get('/{id}', status_code=200, response_model=schemas.UserView)
-def getUser(id: int, db: Session = Depends(get_db)):
+def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(db_models.User).filter(db_models.User.id == id).first()
     if not user:
         raise HTTPException(status_code=405, detail=f'user {id} not found')
@@ -28,13 +28,13 @@ def getUser(id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/delete/{id}', status_code=status.HTTP_200_OK)
-def deleteUser(id: int, db: Session = Depends(get_db)):
+def delete_user(id: int, db: Session = Depends(get_db)):
     user = db.query(db_models.User).filter(db_models.User.id == id).delete(synchronize_session=False)
 
     return {'user deleted': 'done'}
 
 @router.put('/update/{id}', status_code=status.HTTP_201_CREATED)
-def updateUser(id: int, user: schemas.User, db: Session = Depends(get_db)):
+def update_user(id: int, user: schemas.User, db: Session = Depends(get_db)):
     oldUser = db.query(db_models.User).filter(db_models.User.id == id).first()
     if not oldUser:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -48,7 +48,7 @@ def updateUser(id: int, user: schemas.User, db: Session = Depends(get_db)):
 
 
 @router.post('/create-user', response_model=schemas.UserView, tags=['Users'])
-def createUser(request: schemas.User, db: Session = Depends(get_db)):
+def create_user(request: schemas.User, db: Session = Depends(get_db)):
     user = db_models.User(
         username=request.username,
         fullname=request.fullname,
@@ -63,7 +63,7 @@ def createUser(request: schemas.User, db: Session = Depends(get_db)):
 
 
 @router.post('/user/add-info/{id}', response_model=schemas.UserView)
-def addInfo(metadata: schemas.UserMetaData, id: int, db: Session = Depends(get_db)):
+def add_info(metadata: schemas.UserMetaData, id: int, db: Session = Depends(get_db)):
     user = db.query(db_models.User).filter(db_models.User.id == id).first()
     if not user:
         raise HTTPException(status_code=405, detail=f'user {id} not found')
@@ -81,12 +81,7 @@ def addInfo(metadata: schemas.UserMetaData, id: int, db: Session = Depends(get_d
     return user
 
 @router.get('/user-info/{id}', response_model=schemas.UserMetaData)
-def getUserMetaData(id: int, db: Session = Depends(get_db)):
+def get_user_metadata(id: int, db: Session = Depends(get_db)):
     userMetaData = db.query(db_models.UserMetaData).filter(db_models.UserMetaData.id == id).first()
 
     return userMetaData
-
-
-
-
-

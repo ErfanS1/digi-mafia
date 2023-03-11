@@ -1,9 +1,11 @@
 import datetime
 import time
 
-from .enums import Team
+from .enums import Team, GameStatus
 from sqlalchemy import Column, Integer, String, JSON, Enum, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import JSONB
+
 from sqlalchemy.sql import func
 
 from .database import Base
@@ -31,11 +33,13 @@ class UserMetaData(Base):
 
 class Game(Base):
     __tablename__ = 'games'
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     creator_id = Column(Integer, ForeignKey('users.id'))
-    players = Column(JSON)
+    players = Column(JSONB, default=dict)
+    roles = Column(JSONB, default=dict)
+    status = Column(Enum(GameStatus), default=GameStatus.New, nullable=False)
     winners_team = Column(Enum(Team))
-    created_at = Column(DateTime(timezone=True), default=datetime.datetime.now())
+    created_at = Column(DateTime(timezone=True), default=datetime.datetime.now)
     started_at = Column(DateTime(timezone=True))
     ended_at = Column(DateTime(timezone=True))
 #
@@ -46,6 +50,15 @@ class Game(Base):
 #     player_id = Column(Integer)
 #     result = Column(Enum)
 #     type = Column(Enum)
+
+class Role(Base):
+    __tablename__ = 'roles'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String, nullable=False, unique=True)
+    side = Column(Enum(Team), nullable=False)
+    creator_id = Column(Integer, ForeignKey('users.id'))
+    description = Column(String)
+    created_at = Column(DateTime(timezone=True), default=datetime.datetime.now)
 
 
 # naghsh tedad, add e naghsh, pakhsh e naghsh, random,  add e esm, random assign ba repeat
