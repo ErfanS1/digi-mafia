@@ -6,14 +6,13 @@ from database.enums import Team
 
 
 class Game(BaseModel):
-    pass
-    # username: str
+    username: str
     # fullname: str
     # password: str
     # email: str
-    #
-    # class Config:
-    #     orm_mode = True
+
+    class Config:
+        orm_mode = True
 
 class NickName(BaseModel):
     name: str
