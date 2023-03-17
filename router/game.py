@@ -122,7 +122,7 @@ def get_game(
         game_id: int,
         db: Session = Depends(get_db),
         currentUser: db_models.User = Depends(oauth2.getCurrentUser),
-):
+) -> schemas.Game:
     game = GameRepository(db).getById(game_id)
     if not game or game.creator_id != currentUser.id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
