@@ -11,6 +11,7 @@ from repositories.roleRepository import RoleRepository
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError
 from typing import List
+from Games.exceptions import ValidateException
 
 
 router = APIRouter(
@@ -106,11 +107,25 @@ def start_game(
         currentUser: db_models.User = Depends(oauth2.getCurrentUser),
 ):
     game = GameRepository(db).getNewGameByCreatorId(currentUser.id)
-
     if not game:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-    GameModel().startGame(game) # todo here I should assign roles to players
+    try:
+        GameModel().startGame(game, db)
+    except ValidateException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=e.message)
+
+    return game
+
+@router.get('/{id}')
+def get_game(
+        game_id: int,
+        db: Session = Depends(get_db),
+        currentUser: db_models.User = Depends(oauth2.getCurrentUser),
+) -> schemas.Game:
+    game = GameRepository(db).getById(game_id)
+    if not game or game.creator_id != currentUser.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return game
 

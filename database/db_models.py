@@ -42,6 +42,8 @@ class Game(Base):
     created_at = Column(DateTime(timezone=True), default=datetime.datetime.now)
     started_at = Column(DateTime(timezone=True))
     ended_at = Column(DateTime(timezone=True))
+
+    creator = relationship('User')
 #
 # class ActionsPerGame(Base):
 #     __tablename__ = 'actions_per_games'
