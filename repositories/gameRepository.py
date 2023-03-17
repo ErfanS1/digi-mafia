@@ -1,7 +1,7 @@
 from typing import Optional
 
 from Games import schemas
-from database import enums
+from database.enums import GameStatus
 from database import db_models
 from .repository import Repository
 
@@ -13,10 +13,8 @@ class GameRepository(Repository):
 
     def getNewGameByCreatorId(self, creator_id: int) -> Optional[db_models.Game]:
         game = self.db.query(self.dbModel)\
-            .filter(db_models.Game.creator_id == creator_id and db_models.Game.status == enums.GameStatus.New)\
+            .filter(db_models.Game.status == GameStatus.New, db_models.Game.creator_id == creator_id)\
             .one_or_none()
-
-        # print('gameId', game.id)
 
         return game
 
