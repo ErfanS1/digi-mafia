@@ -34,7 +34,6 @@ def create_game(
     game = gameRepository.createGame(currentUser.id)
     return game
 
-
 @router.post('/add/player-nn')
 def add_player_nickname(
         nickName: schemas.NickName,
@@ -72,7 +71,6 @@ def add_role(
 
     return role
 
-
 @router.post('/add/role/{role_id}')
 def add_role_to_game(
         role_id: int,
@@ -99,7 +97,6 @@ def get_all_roles(db: Session = Depends(get_db)) -> List[ShowRole]:
     roles = roleRepository.getAll()
 
     return roles
-
 
 @router.post('/start')
 def start_game(
