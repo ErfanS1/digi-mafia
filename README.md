@@ -32,6 +32,6 @@ it's an open source package manager for mac.
     localhost:8000/docs/
 
 Linux:
-for linux its kind of the same approach and steps are the same.
+for linux its kind of the same approach and steps are the same!
 
 feel free to message me if something went wrong and you couldn't figure it out yourself.
