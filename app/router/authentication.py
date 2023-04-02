@@ -1,10 +1,10 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
-from Authentication.hashing import Hash
-from Authentication.token import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
-from database.database import get_db
-from database import db_models
+from app.Authentication.hashing import Hash
+from app.Authentication.token import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.database.database import get_db
+from app.database import db_models
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 

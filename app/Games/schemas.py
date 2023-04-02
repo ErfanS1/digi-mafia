@@ -1,10 +1,9 @@
 import datetime
 from typing import Optional
-from database.enums import GameStatus
-from Users.schemas import UserView
+from app.database.enums import GameStatus
+from app.Users.schemas import UserView
 from pydantic import BaseModel
-
-from database.enums import Team
+from app.database.enums import Team
 
 
 class Game(BaseModel):

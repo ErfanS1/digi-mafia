@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
-from abc import abstractmethod, ABC
+from abc import ABC
 
-from database.database import Base
 
 class Repository(ABC):
     def __init__(self, db: Session):

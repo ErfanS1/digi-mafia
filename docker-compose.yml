@@ -10,3 +10,9 @@ services:
       - POSTGRES_DB=db
     volumes:
       - /var/folders/data:/var/lib/postgresql/data
+  mafia-app:
+    image: mafia-app
+    ports:
+      - 8000:80
+    depends_on:
+      - digi-postgres

@@ -2,8 +2,8 @@ from typing import Union, Optional
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi import HTTPException, status
-from database import db_models
-from repositories import usersRepository
+from app.database import db_models
+from app.repositories import usersRepository
 from sqlalchemy.orm import Session
 
 

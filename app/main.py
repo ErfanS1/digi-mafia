@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-
-from database import db_models
-from database.database import engine
-from router import user, authentication, game
+from app.database import db_models
+from app.database.database import engine
+from app.router import user, game, authentication
 import uvicorn
 
 app = FastAPI()
@@ -15,7 +14,7 @@ db_models.Base.metadata.create_all(bind=engine)
 
 @app.get('/')
 def index():
-    return {'hello': 'world'}
+    return {'data': 'almost there..'}
 
 
 if __name__ == '__main__':

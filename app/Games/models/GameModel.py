@@ -1,10 +1,10 @@
 # import datetime
-from database import db_models
+from app.database import db_models
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_modified
 from ..exceptions import ValidateException
 from random import shuffle
-from database.enums import GameStatus
+from app.database.enums import GameStatus
 from datetime import datetime
 
 

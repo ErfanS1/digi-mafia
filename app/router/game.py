@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from Authentication import oauth2
-from Games import schemas
-from Games.models.GameModel import GameModel
-from Games.schemas import ShowRole
-from database.database import get_db
-from database import db_models
+from app.Authentication import oauth2
+from app.Games import schemas
+from app.Games.models.GameModel import GameModel
+from app.Games.schemas import ShowRole
+from app.database.database import get_db
+from app.database import db_models
 from sqlalchemy.orm import Session
-from repositories.gameRepository import GameRepository
-from repositories.roleRepository import RoleRepository
+from app.repositories.gameRepository import GameRepository
+from app.repositories.roleRepository import RoleRepository
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError
 from typing import List
-from Games.exceptions import ValidateException
+from app.Games.exceptions import ValidateException
 
 
 router = APIRouter(

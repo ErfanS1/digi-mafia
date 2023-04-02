@@ -2,8 +2,8 @@ fastapi~=0.89.1
 uvicorn~=0.20.0
 pydantic~=1.10.4
 SQLAlchemy~=2.0.3
-psycopg2
-passlib
+psycopg2-binary
 python-jose[cryptography]
+passlib
 python-multipart
 bcrypt

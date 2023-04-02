@@ -1,8 +1,8 @@
 from typing import Optional
 
-from Games import schemas
-from database.enums import GameStatus
-from database import db_models
+from ..Games import schemas
+from app.database.enums import GameStatus
+from app.database import db_models
 from .repository import Repository
 
 
